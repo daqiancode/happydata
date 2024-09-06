@@ -1,5 +1,5 @@
 
-from happydata.transform import *
+from happydata import *
 
 
 def test_groupby():
@@ -12,3 +12,11 @@ def test_groupby_fn():
 
 def test_unique():
     assert unique([3,1, 2, 1, 2, 3]) ==  [3, 1, 2]
+
+def test_partition():
+    assert list(partition([1, 2, 3, 4, 5, 6, 7, 8], 3)) == [[1, 2, 3], [4, 5, 6], [7, 8]]
+    for p in partition(read_lines('setup.py'), 3):
+        print(p)
+
+def test_divide():
+    assert divide([1, 2, 3, 4, 5, 6, 7, 8,9,10], 3) == [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10]]
