@@ -9,25 +9,23 @@ class User:
 
 def test_user_jsonl():
     tmp_path = Path('tests/test_users.jsonl')
-    to_jsonl([User('name', 18), User('张三', 19)], tmp_path)
+    write_jsonl([User('name', 18), User('张三', 19)], tmp_path)
     assert load_jsonl(tmp_path) == [{'name': 'name', 'age': 18}, {'name': '张三', 'age': 19}]
     tmp_path.unlink(tmp_path)
 
 def test_jsonl():
     tmp_path = Path('tests/test.jsonl')
-    to_jsonl([{'a': 1}, {'b': 2}], tmp_path)
+    write_jsonl([{'a': 1}, {'b': 2}], tmp_path)
     assert load_jsonl(tmp_path) == [{'a': 1}, {'b': 2}]
     tmp_path.unlink(tmp_path)
-
-def test_jsonl_gz():
     tmp_path = Path('tests/test.jsonl.gz')
-    to_jsonl_gz([{'a': 1}, {'b': 2}], tmp_path)
+    write_jsonl([{'a': 1}, {'b': 2}], tmp_path)
     assert load_jsonl(tmp_path) == [{'a': 1}, {'b': 2}]
     tmp_path.unlink(tmp_path)
-
-def test_gz_json():
+    
+def test_gz_jsonl():
     tmp_path = Path('tests/test.jsonl.gz')
-    to_jsonl_gz([{'a': 1}, {'b': 2}], tmp_path)
+    write_jsonl_gz([{'a': 1}, {'b': 2}], tmp_path)
     assert load_jsonl_gz(tmp_path) == [{'a': 1}, {'b': 2}]
     tmp_path.unlink(tmp_path)
 
@@ -57,3 +55,23 @@ def test_zip():
         assert name == 'a.txt'
         assert f.read() == b'hello'
     tmp_path.unlink(tmp_path)
+
+
+def test_text():
+    tmp_path = Path('tests/test.txt')
+    write_text('hello', tmp_path)
+    assert read_text(tmp_path) == 'hello'
+    tmp_path.unlink(tmp_path)
+    tmp_path = Path('tests/test.txt.gz')
+    write_text('hello', tmp_path)
+    assert read_text(tmp_path) == 'hello'
+
+
+def test_json():
+    tmp_path = Path('tests/test.json')
+    write_json({'a': 1}, tmp_path)
+    assert read_json(tmp_path) == {'a': 1}
+    tmp_path.unlink(tmp_path)
+    tmp_path = Path('tests/test.json.gz')
+    write_json({'a': 1}, tmp_path)
+    assert read_json(tmp_path) == {'a': 1}
