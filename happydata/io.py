@@ -9,9 +9,14 @@ def to_jsonl(l: Iterable, to:str):
 
 def from_jsonl(from_file:str |Path| IO)->Generator[Dict,str,None]:
     if isinstance(from_file, str) or isinstance(from_file, Path):
-        with open(from_file, 'r') as f:
-            for line in f:
-                yield json.loads(line)
+        if str(from_file).endswith('.gz'):
+            with gzip.open(from_file, 'rt') as f:
+                for line in f:
+                    yield json.loads(line)
+        else:
+            with open(from_file, 'r') as f:
+                for line in f:
+                    yield json.loads(line)
     else:
         for line in from_file:
             yield json.loads(line)

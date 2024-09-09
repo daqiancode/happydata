@@ -19,6 +19,11 @@ def test_jsonl():
     assert load_jsonl(tmp_path) == [{'a': 1}, {'b': 2}]
     tmp_path.unlink(tmp_path)
 
+def test_jsonl_gz():
+    tmp_path = Path('tests/test.jsonl.gz')
+    to_jsonl_gz([{'a': 1}, {'b': 2}], tmp_path)
+    assert load_jsonl(tmp_path) == [{'a': 1}, {'b': 2}]
+    tmp_path.unlink(tmp_path)
 
 def test_gz_json():
     tmp_path = Path('tests/test.jsonl.gz')
