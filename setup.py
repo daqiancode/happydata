@@ -7,7 +7,7 @@ from setuptools import setup, find_packages
 
 # pip install build twine
 # python -m build
-# python -m twine upload --verbose dist/happydata-0.0.2*
+# python -m twine upload --verbose dist/happydata-0.0.3*
 # pip install happydata
 
 setup(
