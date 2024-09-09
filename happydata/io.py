@@ -53,16 +53,26 @@ def load_jsonl_gz(from_file:str)->List[Dict]:
     """load a jsonl file to memory as a list of json object"""
     return list(read_jsonl_gz(from_file))
 
+def load_lines(file:str, remove_end=True)->List[str]:
+    """load a text file to memory as a list of string, support both .gz and plain text"""
+    return list(read_lines(file , remove_end))
+
 def read_lines(file:str|Path,remove_end=True)->Generator[str,str,None]:
     """read a text file as a line generator, remove \n and \r by default. support both .gz and plain text"""
     if str(file).endswith('.gz'):
-        return read_lines_gz(file,remove_end)
-    with open(file, 'r') as f:
-        for line in f:
-            if remove_end:
-                yield line.removesuffix('\n').removesuffix('\r')
-            else:
-                yield line
+        with gzip.open(file, 'rt') as f:
+            for line in f:
+                if remove_end:
+                    yield line.removesuffix('\n').removesuffix('\r')
+                else:
+                    yield line
+    else:
+        with open(file, 'r') as f:
+            for line in f:
+                if remove_end:
+                    yield line.removesuffix('\n').removesuffix('\r')
+                else:
+                    yield line
 
 def read_lines_gz(file:str,remove_end=True)->Generator[str,str,None]:
     """read a text file as a line generator, remove \n and \r by default"""

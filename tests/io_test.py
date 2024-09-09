@@ -22,7 +22,7 @@ def test_jsonl():
     write_jsonl([{'a': 1}, {'b': 2}], tmp_path)
     assert load_jsonl(tmp_path) == [{'a': 1}, {'b': 2}]
     tmp_path.unlink(tmp_path)
-    
+
 def test_gz_jsonl():
     tmp_path = Path('tests/test.jsonl.gz')
     write_jsonl_gz([{'a': 1}, {'b': 2}], tmp_path)
@@ -33,6 +33,10 @@ def test_lines():
     tmp_path = Path('tests/test.txt')
     write_lines(['a', 'b', 'c'],tmp_path)
     assert list(read_lines(tmp_path)) == ['a', 'b', 'c']
+    tmp_path.unlink(tmp_path)
+    tmp_path = Path('tests/test.txt.gz')
+    write_lines(['a', 'b', 'c'],tmp_path)
+    assert load_lines(tmp_path) == ['a', 'b', 'c']
     tmp_path.unlink(tmp_path)
 
 def test_tar_gz():
@@ -65,6 +69,7 @@ def test_text():
     tmp_path = Path('tests/test.txt.gz')
     write_text('hello', tmp_path)
     assert read_text(tmp_path) == 'hello'
+    tmp_path.unlink(tmp_path)
 
 
 def test_json():
@@ -75,3 +80,4 @@ def test_json():
     tmp_path = Path('tests/test.json.gz')
     write_json({'a': 1}, tmp_path)
     assert read_json(tmp_path) == {'a': 1}
+    tmp_path.unlink(tmp_path)
