@@ -46,6 +46,9 @@ write_zip({
     'test.txt': io.BytesIO(b'hello'),
     }, 'test.zip')
 
+# dir
+files = load_dir('test_dir')
+
 # commands:
 state,stdout,stderr = run('ls')
 

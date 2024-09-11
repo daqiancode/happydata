@@ -64,20 +64,23 @@ def test_zip():
 def test_text():
     tmp_path = Path('tests/test.txt')
     write_text('hello', tmp_path)
-    assert read_text(tmp_path) == 'hello'
+    assert load_text(tmp_path) == 'hello'
     tmp_path.unlink(tmp_path)
     tmp_path = Path('tests/test.txt.gz')
     write_text('hello', tmp_path)
-    assert read_text(tmp_path) == 'hello'
+    assert load_text(tmp_path) == 'hello'
     tmp_path.unlink(tmp_path)
 
 
 def test_json():
     tmp_path = Path('tests/test.json')
     write_json({'a': 1}, tmp_path)
-    assert read_json(tmp_path) == {'a': 1}
+    assert load_json(tmp_path) == {'a': 1}
     tmp_path.unlink(tmp_path)
     tmp_path = Path('tests/test.json.gz')
     write_json({'a': 1}, tmp_path)
-    assert read_json(tmp_path) == {'a': 1}
+    assert load_json(tmp_path) == {"a": 1}
     tmp_path.unlink(tmp_path)
+
+def test_dir():
+    assert load_dir(".", suffix=["setup.py"])[0].endswith("setup.py")

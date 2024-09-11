@@ -131,7 +131,7 @@ def write_zip(file:str|Path,files:Dict[str,BinaryIO]):
         for name, f in files.items():
             z.writestr(name, f.read())
 
-def read_text(file:str|Path)->str:
+def load_text(file:str|Path)->str:
     """file to text"""
     if str(file).endswith('.gz'):
         with gzip.open(file, 'rt') as f:
@@ -148,7 +148,7 @@ def write_text(s:str,to:str|Path):
     with open(to, 'w') as f:
         f.write(s)
 
-def read_json(file:str|Path)->Dict:
+def load_json(file:str|Path)->Dict:
     """file to json"""
     if str(file).endswith('.gz'):
         with gzip.open(file, 'rt') as f:
@@ -164,3 +164,36 @@ def write_json(d:Dict,to:str|Path):
         return
     with open(to, 'w') as f:
         json.dump(d, f)
+
+def match_suffix(file:str|Path,suffix:str|List)->bool:
+    """check if a file has a suffix"""
+    if isinstance(suffix, str):
+        return str(file).lower().endswith(suffix.lower())
+    if isinstance(suffix, list):
+        for s in suffix:
+            if str(file).lower().endswith(s.lower()):
+                return True
+        return False
+
+def read_dir(d:str|Path, recursive:bool=False,suffix:str|List=None)->Generator[str,str,None]:
+    """list all files in a directory in absolute path"""
+    if not recursive:
+        for f in os.listdir(d):
+            if suffix:
+                if os.path.isfile(f) and match_suffix(f, suffix):
+                    yield os.path.abspath(os.path.join(d,f))
+            else:
+                if os.path.isfile(f):
+                    yield os.path.abspath(os.path.join(d,f))
+    else:
+        for root, dirs, files in os.walk(d):
+            for f in files:
+                if suffix:
+                    if match_suffix(f, suffix):
+                        yield os.path.abspath(os.path.join(root,f))
+                else:
+                    yield os.path.abspath(os.path.join(root,f))
+
+def load_dir(d:str|Path, recursive:bool=False,suffix:str=None)->List[str]:
+    """list all files in a directory in absolute path"""
+    return list(read_dir(d, recursive, suffix))
