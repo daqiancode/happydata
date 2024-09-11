@@ -180,10 +180,10 @@ def read_dir(d:str|Path, recursive:bool=False,suffix:str|List=None)->Generator[s
     if not recursive:
         for f in os.listdir(d):
             if suffix:
-                if os.path.isfile(f) and match_suffix(f, suffix):
+                if os.path.isfile(os.path.join(d,f)) and match_suffix(f, suffix):
                     yield os.path.abspath(os.path.join(d,f))
             else:
-                if os.path.isfile(f):
+                if os.path.isfile(os.path.join(d,f)):
                     yield os.path.abspath(os.path.join(d,f))
     else:
         for root, dirs, files in os.walk(d):
