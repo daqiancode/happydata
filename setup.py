@@ -7,19 +7,19 @@ from setuptools import setup, find_packages
 
 # pip install build twine
 # python -m build
-# python -m twine upload --verbose dist/happydata-0.0.4*
+# python -m twine upload --verbose dist/happydata-0.0.6*
 # pip install happydata
 
 setup(
     name='happydata',
-    version='0.0.4',
+    version='0.0.6',
     author="Daqian",
     packages=find_packages(exclude=['tests', 'tests.*','venv']),
     zip_safe=False,
     description='happy data loading,writing, transforming without third party library',
     long_description='happy data loading,writing, transforming without third party library',
     license='MIT license',
-    keywords=['data', 'data loading', 'data writing', 'data transforming','json','jsonl','gz'],
+    keywords=['data', 'data loading', 'data writing', 'data transforming','json','jsonl','gz','lodash'],
     platforms='Independant',
     url='https://github.com/daqiancode/happydata',
 )

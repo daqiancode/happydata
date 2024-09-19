@@ -83,4 +83,5 @@ def test_json():
     tmp_path.unlink(tmp_path)
 
 def test_dir():
+    print(load_dir("/Users/daqian.zhang"))
     assert load_dir(".", suffix=["setup.py"])[0].endswith("setup.py")

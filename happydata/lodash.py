@@ -1,7 +1,12 @@
 from typing import List, Dict, Iterable, Generator, Callable,Any
-import datetime
+import datetime,random
 
 def groupby(l: Iterable, key: str| Callable) -> Dict:
+    """group a list by key
+    @param l: list of dict
+    @param key: key to group by
+    @return: dict of key -> list of item
+    """
     if not l:
         return l
     if key and callable(key):
@@ -20,6 +25,23 @@ def groupby(l: Iterable, key: str| Callable) -> Dict:
         d[k].append(item)
     return d
 
+def indexby(l: Iterable, key: str| Callable) -> Dict:
+    """index a list by key, keep the last one if duplicated
+    @param l: list of dict
+    @param key: key to index by
+    @return: dict of key -> item
+    """
+    if not l:
+        return l
+    if key and callable(key):
+        d = {}
+        for item in l:
+            d[key(item)] = item
+        return d
+    d = {}
+    for item in l:
+        d[item[key]] = item
+    return d
 
 def unique(l:List, fn:Callable=None) -> List:
     """unique list and keep order"""
@@ -107,3 +129,54 @@ def now()->int:
     """return current time in seconds"""
     return int(datetime.datetime.now().timestamp())
 
+def pick(d:Dict, keys:List)->Dict:
+    """pick keys from a dict"""
+    if not d or not keys:
+        return d
+    return {k: d[k] for k in keys if k in d}
+
+def omit(d:Dict, keys:List)->Dict:
+    """omit keys from a dict"""
+    if not d or not keys:
+        return d
+    return {k: d[k] for k in d if k not in keys}
+
+def compact(l:List)->List:
+    """remove None, False, 0 from a list"""
+    if not l:
+        return l
+    return [x for x in l if x]
+
+def shuffle(l:List)->List:
+    """shuffle a list"""
+    l = [v for v in l]
+    random.shuffle(l)
+    return l
+
+def sample(l:List, n:int)->List:
+    """sample n elements from a list"""
+    return random.sample(l, n)
+
+def randstr(n:int, az=True,AZ=True, digits = True)->str:
+    """generate a random string with length n"""
+    s = ''
+    if az:
+        s += 'abcdefghijklmnopqrstuvwxyz'
+    if AZ:
+        s += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    if digits:
+        s += '0123456789'
+    return ''.join(random.choices(s, k=n))
+
+
+def union(*args:List)->List:
+    """union multiple lists"""
+    return list(set(flattern(args)))
+
+def intersection(*args:List)->List:
+    """intersection multiple lists"""
+    return list(set.intersection(*map(set, args)))
+
+def difference(a:List, b:List)->List:
+    """difference of two lists"""
+    return list(set(a) - set(b))

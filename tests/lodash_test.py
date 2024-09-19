@@ -51,3 +51,78 @@ def test_flattern_deep(x,y):
 def test_now():
     assert now() > 1725628633
 
+
+@pytest.mark.parametrize('x,k,y', [
+    ([{'a': 1}, {'a': 2}, {'a': 1}], 'a', {1: {'a': 1}, 2: {'a': 2}}),
+    ([{'a': 1}, {'a': 2}, {'a': 1}], lambda x: x['a'], {1: {'a': 1}, 2: {'a': 2}}),
+])
+def test_indexby(x, k ,y):
+    assert indexby(x, k) == y
+
+@pytest.mark.parametrize('x,keys,y', [
+    ({'a': 1, 'b': 2, 'c': 3}, ['a', 'b'], {'a': 1, 'b': 2}),
+    ({'a': 1, 'b': 2, 'c': 3}, ['a', 'b', 'd'], {'a': 1, 'b': 2}),
+    ({'a': 1, 'b': 2, 'c': 3}, ['a', 'b', 'c'], {'a': 1, 'b': 2, 'c': 3}),
+    ({'a': 1, 'b': 2, 'c': 3}, ['a', 'b', 'c', 'd'], {'a': 1, 'b': 2, 'c': 3}),
+    ({'a': 1, 'b': 2, 'c': 3}, ['a', 'b', 'c', 'd', 'e'], {'a': 1, 'b': 2, 'c': 3}),
+])
+def test_pick(x , keys , y ):
+    assert pick(x, keys) == y
+
+@pytest.mark.parametrize('x,keys,y', [
+    (None, ['a', 'b'], None),
+    ({}, ['a', 'b'], {}),
+    ({'a': 1, 'b': 2, 'c': 3}, ['a', 'b'], {'c': 3}),
+    ({'a': 1, 'b': 2, 'c': 3}, ['a', 'b', 'd'], {'c': 3}),
+    ({'a': 1, 'b': 2, 'c': 3}, ['a', 'b', 'c'], {}),
+    ({'a': 1, 'b': 2, 'c': 3}, ['a', 'b', 'c', 'd'], {}),
+    ({'a': 1, 'b': 2, 'c': 3}, ['a', 'b', 'c', 'd', 'e'], {}),
+])
+def test_omit(x , keys ,y):
+    assert omit(x, keys) == y
+
+def test_shuffle():
+    x = list(range(100))
+    y = shuffle(x)
+    assert x != y
+    assert sorted(x) == sorted(y)
+
+def test_sample():
+    x = list(range(100))
+    y = sample(x, 10)
+    assert len(y) == 10
+    assert all([i in x for i in y])
+
+
+def test_randstr():
+    assert len(randstr(10)) == 10
+    assert len(randstr(10, False)) == 10
+    assert len(randstr(10, False,False)) == 10
+
+@pytest.mark.parametrize('x,y', [
+    ([[1, 2, 3], [4, 5, 6], [7, 8, 9]], [1, 2, 3, 4, 5, 6, 7, 8, 9]),
+])
+def test_union(x , y):
+    assert union(*x) == y
+
+@pytest.mark.parametrize('a,b,y', [
+    ([1, 2, 3], [2, 3, 4], [2, 3]),
+    ([1, 2, 3], [4, 5, 6], []),
+    ([1, 2, 3], [1, 2, 3], [1, 2, 3]),
+    ([1, 2, 3], [], []),
+    ([], [1, 2, 3], []),
+    ([], [], []),
+])
+def test_intersection(a,b,y):
+    assert intersection(a,b) == y
+
+@pytest.mark.parametrize('a,b,y', [
+    ([1, 2, 3], [2, 3, 4], [1]),
+    ([1, 2, 3], [4, 5, 6], [1, 2, 3]),
+    ([1, 2, 3], [1, 2, 3], []),
+    ([1, 2, 3], [], [1, 2, 3]),
+    ([], [1, 2, 3], []),
+    ([], [], []),
+])
+def test_difference(a,b,y):
+    assert difference(a,b) == y
