@@ -168,6 +168,19 @@ def randstr(n:int, az=True,AZ=True, digits = True)->str:
         s += '0123456789'
     return ''.join(random.choices(s, k=n))
 
+def rand(lower=0, upper=None)->int:
+    """generate a random number between lower and upper"""
+    if upper is None:
+        upper = lower
+        lower = 0
+    return random.randint(lower, upper)
+
+def clamp(n:int|float, lower:int|float, upper:int|float)->int|float:
+    """clamp a number between lower and upper"""
+    if lower > upper:
+        lower, upper = upper, lower
+    return max(lower, min(n, upper))
+
 
 def union(*args:List)->List:
     """union multiple lists"""
@@ -180,3 +193,31 @@ def intersection(*args:List)->List:
 def difference(a:List, b:List)->List:
     """difference of two lists"""
     return list(set(a) - set(b))
+
+def argsort(l:List, key:Callable=None)->List:
+    """sort a list by key and return the index"""
+    if key:
+        return sorted(range(len(l)), key=lambda i: key(l[i]))
+    return sorted(range(len(l)), key=lambda i: l[i])
+
+def trim_left(s:str, x:str=None)->str:
+    """remove leading and trailing spaces"""
+    if not x:
+        return s.lstrip(x)
+    if s.startswith(x):
+        s =  s[len(x):]
+        return trim_left(s, x)
+    return s
+
+def trim_right(s:str, x:str=None)->str:
+    """remove trailing spaces"""
+    if not x:
+        return s.rstrip(x)
+    if s.endswith(x):
+        s =  s[:-len(x)]
+        return trim_right(s, x)
+    return s
+
+def trim(s:str, x:str=None)->str:
+    """remove leading and trailing"""
+    return trim_left(trim_right(s, x), x)

@@ -126,3 +126,38 @@ def test_intersection(a,b,y):
 ])
 def test_difference(a,b,y):
     assert difference(a,b) == y
+
+
+@pytest.mark.parametrize('x,y', [
+    ([1, 2, 3], [0, 1,2]),
+    ([3, 2, 1], [2, 1, 0]),
+    ([], []),
+    ([5,2,6,3,33,45] , [1, 3, 0, 2, 4, 5]),
+])
+def test_argsort(x, y):
+    assert argsort(x) == y
+
+@pytest.mark.parametrize('x,lower,upper,y', [
+    (1, 2, 3, 2),
+    (2, 2, 3, 2),
+    (3, 2, 3, 3),
+    (4, 2, 3, 3),
+    (1, 2, 1, 1),
+    (2, 2, 1, 2),
+    (3, 2, 1, 2),
+])
+def test_clamp(x, lower, upper, y):
+    assert clamp(x, lower, upper) == y
+
+@pytest.mark.parametrize('x,a,y', [
+    (' abc  ', ' ', 'abc'),
+    ("aaaaabc", 'a', 'bc'),
+    ("aaaaabc", 'ab', 'aaaaabc'),
+    ("aaaaabc", 'aa', 'abc'),
+    ('abcabc', 'abc', ''),
+    ('abxyzyz', 'yz', 'abx'),
+    ('abxyzyz', 'xyz', 'abxyzyz'),
+    ('abxyzyz', 'z', 'abxyzy'),
+])
+def test_trim(x,a,y):
+    assert trim(x,a) == y
