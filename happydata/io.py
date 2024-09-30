@@ -197,3 +197,20 @@ def read_dir(d:str|Path, recursive:bool=False,suffix:str|List=None)->Generator[s
 def load_dir(d:str|Path, recursive:bool=False,suffix:str=None)->List[str]:
     """list all files in a directory in absolute path"""
     return list(read_dir(d, recursive, suffix))
+
+
+def read_tar(file:str|Path) -> Generator[Tuple[tarfile.TarInfo,IO],str,None]:
+    """read a tar file as a file generator"""
+    with tarfile.open(file, 'r') as tar:
+        for member in tar.getmembers():
+            with tar.extractfile(member) as f:
+                yield member , f
+
+def write_tar(file:str|Path,files:Dict[str,BinaryIO]):
+    """write a dict of file to a tar file"""
+    with tarfile.open(file, 'w') as tar:
+        for name, f in files.items():
+            info = tarfile.TarInfo(name)
+            buf = f.read()
+            info.size = len(buf)
+            tar.addfile(info, io.BytesIO(buf))

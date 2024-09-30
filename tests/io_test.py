@@ -85,3 +85,14 @@ def test_json():
 def test_dir():
     print(load_dir("/Users/daqian.zhang"))
     assert load_dir(".", suffix=["setup.py"])[0].endswith("setup.py")
+
+
+def test_tar():
+    tmp_path = Path('tests/test.tar')
+    write_tar(tmp_path, {
+        'a.txt': io.BytesIO(b'hello'),
+    })
+    for item, f in read_tar(tmp_path):
+        assert item.name == 'a.txt'
+        assert f.read() == b'hello'
+    tmp_path.unlink(tmp_path)
