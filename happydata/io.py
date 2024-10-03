@@ -160,10 +160,10 @@ def write_json(d:Dict,to:str|Path):
     """json to file"""
     if str(to).endswith('.gz'):
         with gzip.open(to, 'wt') as f:
-            json.dump(d, f)
+            json.dump(d, f,ensure_ascii=False, default=vars)
         return
     with open(to, 'w') as f:
-        json.dump(d, f)
+        json.dump(d, f,ensure_ascii=False, default=vars)
 
 def match_suffix(file:str|Path,suffix:str|List)->bool:
     """check if a file has a suffix"""
