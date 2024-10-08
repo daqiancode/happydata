@@ -19,7 +19,7 @@ class User:
         self.age = age
 tmp_path = 'test_users.jsonl'
 # jsonl
-read_jsonl([User('name', 18), User('张三', 19)], tmp_path)
+write_jsonl([User('name', 18), User('张三', 19)], tmp_path)
 assert load_jsonl(tmp_path) == [{'name': 'name', 'age': 18}, {'name': '张三', 'age': 19}]
 
 # jsonl.gz
