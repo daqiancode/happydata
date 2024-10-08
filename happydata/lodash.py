@@ -1,5 +1,5 @@
 from typing import List, Dict, Iterable, Generator, Callable,Any
-import datetime,random
+import datetime,random,re
 
 def groupby(l: Iterable, key: str| Callable) -> Dict:
     """group a list by key
@@ -221,3 +221,34 @@ def trim_right(s:str, x:str=None)->str:
 def trim(s:str, x:str=None)->str:
     """remove leading and trailing"""
     return trim_left(trim_right(s, x), x)
+
+def re_groups(s:str, pattern:str)->List[str]:
+    """
+    match a string with a regex pattern and return the group
+    @param s: string
+    @param pattern: regex pattern
+    @param group: group index, None to return all groups
+    @return: list of groups or group
+
+    """
+    if not s:
+        return s
+    m = re.match(pattern, s)
+    if not m:
+        return []
+    return m.groups()
+
+def re_find(s:str, pattern:str)->str:
+    """
+    match a string with a regex pattern and return the first match
+    @param s: string
+    @param pattern: regex pattern
+    @return: first match
+    """
+    if not s:
+        return s
+    m = re.match(pattern, s)
+    if not m:
+        return ''
+    return m.group(0)
+    

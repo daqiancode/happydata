@@ -161,3 +161,20 @@ def test_clamp(x, lower, upper, y):
 ])
 def test_trim(x,a,y):
     assert trim(x,a) == y
+
+@pytest.mark.parametrize('s,re,y', [
+    ('abc', 'a', 'a'),
+    ('123abc', r'\d+', '123'),
+    ('/a/b/c?xx', r'(/\w+)', '/a'),
+])
+def test_re_find(s,re,y):
+    assert re_find(s,re) == y
+
+@pytest.mark.parametrize('s,re,y', [
+    ('123abc', r'(\d+)', ('123',)),
+    ('123abc', r'\d+([a-z]+)', ('abc',)),
+    ('123abc', r'(\d+)([a-z]+)', ('123','abc')),
+    ('/a/b/c', r'(/\w+)(/\w+)', ('/a', '/b')),
+])
+def test_re_groups(s,re,y):
+    assert re_groups(s,re) == y
