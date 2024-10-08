@@ -91,16 +91,16 @@ def write_lines(lines:Iterable[str],to:str|Path ,add_end=True):
     with open(to, 'w') as f:
         for line in lines:
             if add_end:
-                f.write(line+'\n')
+                f.write(str(line)+'\n')
             else:
-                f.write(line)
+                f.write(str(line))
 def write_lines_gz(lines:Iterable[str],to:str|Path ,add_end=True):
     with gzip.open(to, 'wt') as f:
         for line in lines:
             if add_end:
-                f.write(line+'\n')
+                f.write(str(line)+'\n')
             else:
-                f.write(line)
+                f.write(str(line))
 
 def read_tar_gz(file:str|Path) -> Generator[Tuple[tarfile.TarInfo,IO],str,None]:
     """read a tar.gz file as a file generator"""
