@@ -178,3 +178,7 @@ def test_re_find(s,re,y):
 ])
 def test_re_groups(s,re,y):
     assert re_groups(s,re) == y
+
+def test_new_dict():
+    assert kv() == {}
+    assert kv(a=1, b=None, c=3) == {'a': 1, 'c': 3}

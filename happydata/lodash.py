@@ -222,6 +222,10 @@ def trim(s:str, x:str=None)->str:
     """remove leading and trailing"""
     return trim_left(trim_right(s, x), x)
 
+def kv(**kwargs)->Dict:
+    """create a new dict with non-None values"""
+    return {k:v for k,v in kwargs.items() if v is not None}
+
 def re_groups(s:str, pattern:str)->List[str]:
     """
     match a string with a regex pattern and return the group
