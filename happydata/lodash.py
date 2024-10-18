@@ -8,7 +8,7 @@ def groupby(l: Iterable, key: str| Callable) -> Dict:
     @return: dict of key -> list of item
     """
     if not l:
-        return l
+        return {}
     if key and callable(key):
         d = {}
         for item in l:
@@ -23,6 +23,36 @@ def groupby(l: Iterable, key: str| Callable) -> Dict:
         if k not in d:
             d[k] = []
         d[k].append(item)
+    return d
+
+def groupby_one(l: Iterable, key: str| Callable, keep_first=True) -> Dict:
+    """group a list by key, keep the first one if duplicated
+    @param l: list of dict
+    @param key: key to group by
+    @return: dict of key -> item
+    """
+    if not l:
+        return {}
+    if key and callable(key):
+        d = {}
+        for item in l:
+            k = key(item)
+            if k not in d:
+                d[k] = item
+                continue
+            if keep_first:
+                continue
+            d[k] = item
+        return d
+    d = {}
+    for item in l:
+        k = item[key]
+        if k not in d:
+            d[k] = item
+            continue
+        if keep_first:
+            continue
+        d[k] = item
     return d
 
 def indexby(l: Iterable, key: str| Callable) -> Dict:

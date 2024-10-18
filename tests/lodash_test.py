@@ -1,13 +1,19 @@
 from happydata import *
 import pytest
 
+@pytest.mark.parametrize('x,y', [
+    ([{'a': 1}, {'a': 2}, {'a': 1}], {1: [{'a': 1}, {'a': 1}], 2: [{'a': 2}]}),
+    ([] , {}),
+])
+def test_groupby(x, y ):
+    assert groupby(x, 'a') == y
 
-def test_groupby():
-    assert groupby([{'a': 1}, {'a': 2}, {'a': 1}], 'a') == {1: [{'a': 1}, {'a': 1}], 2: [{'a': 2}]}
-
-
-def test_groupby():
-    assert groupby([{'a': 1}, {'a': 2}, {'a': 1}], lambda x: x['a']) == {1: [{'a': 1}, {'a': 1}], 2: [{'a': 2}]}
+@pytest.mark.parametrize('x,y', [
+    ([],{}),
+    ([{'a': 1}, {'a': 2}, {'a': 1}], {1: {'a': 1}, 2: {'a': 2}}),
+])
+def test_groupby_one(x,y):
+    assert groupby_one(x,'a') == y
 
 @pytest.mark.parametrize('x,y', [
     ([10, 2,3, 10,3], [10, 2, 3]),
