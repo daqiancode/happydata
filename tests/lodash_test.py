@@ -12,8 +12,8 @@ def test_groupby(x, y ):
     ([],{}),
     ([{'a': 1}, {'a': 2}, {'a': 1}], {1: {'a': 1}, 2: {'a': 2}}),
 ])
-def test_groupby_one(x,y):
-    assert groupby_one(x,'a') == y
+def test_indexby(x,y):
+    assert indexby(x,'a') == y
 
 @pytest.mark.parametrize('x,y', [
     ([10, 2,3, 10,3], [10, 2, 3]),

@@ -51,15 +51,28 @@ def indexby(l: Iterable, key: str| Callable , keep_first=True) -> Dict:
         d[k] = item
     return d
 
-def unique(l:List, fn:Callable=None) -> List:
+def unique(l:List, fn:Callable=None,keep_first=True) -> List:
     """unique list and keep order"""
     if not l:
         return l
-    if fn and callable(fn):
-        seen = set()
-        return [x for x in l if not (fn(x) in seen or seen.add(fn(x)))]
-    seen = set()
-    return [x for x in l if not (x in seen or seen.add(x))]
+    d = {}
+    r = []
+    if fn:
+        for item in l:
+            k = fn(item)
+            if k in d:
+                if keep_first:
+                    continue
+            d[k] = True
+            r.append(item)
+        return r
+    for item in l:
+        if item in d:
+            if keep_first:
+                continue
+        d[item] = True
+        r.append(item)
+    return r
 
 
 def partition(l: Iterable,partition_size:int) -> Generator[List, None, None]:
