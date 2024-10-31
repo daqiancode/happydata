@@ -1,5 +1,6 @@
 from typing import List, Dict, Iterable, Generator, Callable,Any
-import datetime,random,re
+import datetime,random,re,hashlib,hmac
+
 
 def groupby(l: Iterable, key: str| Callable) -> Dict:
     """group a list by key
@@ -277,3 +278,54 @@ def re_find(s:str, pattern:str)->str:
         return ''
     return m.group(0)
     
+def md5(s:str | bytes)->str:
+    """md5 hash of a string"""
+    if not s:
+        return ''
+    if isinstance(s, str):
+        s = s.encode()
+    return hashlib.md5(s).hexdigest()
+
+def sha1(s:str | bytes)->str:
+    """sha1 hash of a string or bytes"""
+    if not s:
+        return ''
+    if isinstance(s, str):
+        s = s.encode()
+    return hashlib.sha1(s).hexdigest()
+
+def sha256(s:str | bytes)->str:
+    """sha256 hash of a string or bytes"""
+    if not s:
+        return ''
+    if isinstance(s, str):
+        s = s.encode()
+    return hashlib.sha256(s).hexdigest()
+
+def sha512(s:str | bytes)->str:
+    """sha512 hash of a string or bytes"""
+    if not s:
+        return ''
+    if isinstance(s, str):
+        s = s.encode()
+    return hashlib.sha512(s).hexdigest()
+
+def hmac_sha256(s:str | bytes, key:str | bytes)->str:
+    """hmac sha256 hash of a string or bytes"""
+    if not s:
+        return ''
+    if isinstance(s, str):
+        s = s.encode()
+    if isinstance(key, str):
+        key = key.encode()
+    return hmac.new(key, s, hashlib.sha256).hexdigest()
+
+def hmac_sha512(s:str | bytes, key:str | bytes)->str:
+    """hmac sha512 hash of a string or bytes"""
+    if not s:
+        return ''
+    if isinstance(s, str):
+        s = s.encode()
+    if isinstance(key, str):
+        key = key.encode()
+    return hmac.new(key, s, hashlib.sha512).hexdigest()

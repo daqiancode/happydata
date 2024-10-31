@@ -188,3 +188,50 @@ def test_re_groups(s,re,y):
 def test_new_dict():
     assert kv() == {}
     assert kv(a=1, b=None, c=3) == {'a': 1, 'c': 3}
+
+
+@pytest.mark.parametrize('x,y', [
+    ('abc', '900150983cd24fb0d6963f7d28e17f72'),
+    (b'abc', '900150983cd24fb0d6963f7d28e17f72'),
+    ('', ''),
+])
+def test_md5(x,y):
+    assert md5(x) == y
+
+@pytest.mark.parametrize('x,y', [
+    ('abc', 'a9993e364706816aba3e25717850c26c9cd0d89d'),
+    ('', ''),
+])
+def test_sha1(x,y):
+    assert sha1(x) == y
+
+@pytest.mark.parametrize('x,y', [
+    ('abc', 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad'),
+    ('', ''),
+])
+def test_sha256(x,y):
+    assert sha256(x) == y
+
+@pytest.mark.parametrize('x,y', [
+    ('abc', 'ddaf35a193617abacc417349ae20413112e6fa4e89a97ea20a9eeee64b55d39a2192992a274fc1a836ba3c23a3feebbd454d4423643ce80e2a9ac94fa54ca49f'),
+    ('', ''),
+])
+def test_sha512(x,y):
+    assert sha512(x) == y
+
+
+@pytest.mark.parametrize('x,k,y', [
+    ('abc', 'abc' , '2f02e24ae2e1fe880399f27600afa88364e6062bf9bbe114b32fa8f23d03608a'),
+    ('abc', b'abc' , '2f02e24ae2e1fe880399f27600afa88364e6062bf9bbe114b32fa8f23d03608a'),
+    ('','', ''),
+])
+def test_hmac_sha256(x,k , y):
+    assert hmac_sha256(x , k) == y
+
+@pytest.mark.parametrize('x,k,y', [
+    ('abc', 'abc' , '1a97e05c35e6727690dfdf2e8079b34fefabf15236abc9170dccdcf5623e4c5ce72a446842bd7607186c9e3f21c0a0edf6ab6c5ec8304a1f969c20c1455e9b7c'),
+    ('abc', b'abc' , '1a97e05c35e6727690dfdf2e8079b34fefabf15236abc9170dccdcf5623e4c5ce72a446842bd7607186c9e3f21c0a0edf6ab6c5ec8304a1f969c20c1455e9b7c'),
+    ('','', '')
+])
+def test_hmac_sha512(x,k,y):
+    assert hmac_sha512(x , k) == y
