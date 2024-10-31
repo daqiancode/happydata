@@ -7,12 +7,12 @@ from setuptools import setup, find_packages
 
 # pip install build twine
 # python -m build
-# python -m twine upload --verbose dist/happydata-0.0.11*
+# python -m twine upload --verbose dist/happydata-0.0.12*
 # pip install happydata
 
 setup(
     name='happydata',
-    version='0.0.11',
+    version='0.0.12',
     author="Daqian",
     packages=find_packages(exclude=['tests', 'tests.*','venv']),
     zip_safe=False,
