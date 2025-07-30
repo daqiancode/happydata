@@ -2,12 +2,12 @@ import json,os,gzip,io,tarfile,zipfile
 from typing import List,Dict,Iterable,Generator,Optional,IO,Tuple,BinaryIO,Any
 from pathlib import Path
 
-def write_jsonl(l: Iterable, to:str):
+def write_jsonl(l: Iterable, to:str , append:bool=False):
     """write a list of dict to a jsonl file, support both .gz and plain text"""
     if str(to).endswith('.gz'):
-        write_jsonl_gz(l, to)
+        write_jsonl_gz(l, to, append=append)
         return
-    with open(to, 'w') as f:
+    with open(to, 'a' if append else 'w') as f:
         for item in l:
             f.write(json.dumps(item, ensure_ascii=False, default=vars) + '\n')
 
@@ -26,9 +26,9 @@ def read_jsonl(from_file:str |Path| IO)->Generator[Any,str,None]:
         for line in from_file:
             yield json.loads(line)
 
-def write_jsonl_gz(l: Iterable, to:str, add_end=True):
+def write_jsonl_gz(l: Iterable, to:str, add_end=True, append:bool=False):
     """write a list of dict to a jsonl file"""
-    with gzip.open(to, 'wt') as f:
+    with gzip.open(to, 'at' if append else 'wt') as f:
         for item in l:
             if add_end:
                 f.write(json.dumps(item, ensure_ascii=False, default=vars) + '\n')
@@ -83,19 +83,19 @@ def read_lines_gz(file:str,remove_end=True)->Generator[str,str,None]:
             else:
                 yield line
 
-def write_lines(lines:Iterable[str],to:str|Path ,add_end=True):
+def write_lines(lines:Iterable[str],to:str|Path ,add_end=True, append:bool=False):
     """write a list of string to a text file, support both .gz and plain text"""
     if str(to).endswith('.gz'):
-        write_lines_gz(lines, to, add_end)
+        write_lines_gz(lines, to, add_end, append)
         return
-    with open(to, 'w') as f:
+    with open(to, 'a' if append else 'w') as f:
         for line in lines:
             if add_end:
                 f.write(str(line)+'\n')
             else:
                 f.write(str(line))
-def write_lines_gz(lines:Iterable[str],to:str|Path ,add_end=True):
-    with gzip.open(to, 'wt') as f:
+def write_lines_gz(lines:Iterable[str],to:str|Path ,add_end=True, append:bool=False):
+    with gzip.open(to, 'at' if append else 'wt') as f:
         for line in lines:
             if add_end:
                 f.write(str(line)+'\n')
@@ -139,13 +139,13 @@ def load_text(file:str|Path)->str:
     with open(file, 'r') as f:
         return f.read()
 
-def write_text(s:str,to:str|Path):
+def write_text(s:str,to:str|Path, append:bool=False):
     """text to file"""
     if str(to).endswith('.gz'):
-        with gzip.open(to, 'wt') as f:
+        with gzip.open(to, 'at' if append else 'wt') as f:
             f.write(s)
         return
-    with open(to, 'w') as f:
+    with open(to, 'a' if append else 'w') as f:
         f.write(s)
 
 def load_json(file:str|Path)->Dict:

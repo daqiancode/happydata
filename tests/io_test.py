@@ -96,3 +96,22 @@ def test_tar():
         assert item.name == 'a.txt'
         assert f.read() == b'hello'
     tmp_path.unlink(tmp_path)
+
+def test_jsonl_append():
+    tmp_path = Path('tests/test.jsonl')
+    write_jsonl([{'a': 1}], tmp_path)
+    write_jsonl([{'b': 2}], tmp_path, append=True)
+    assert load_jsonl(tmp_path) == [{'a': 1}, {'b': 2}]
+    tmp_path.unlink(tmp_path)
+
+def test_lines_append():
+    tmp_path = Path('tests/test.txt')
+    write_lines(['a'], tmp_path)
+    write_lines(['b'], tmp_path, append=True)
+    assert load_lines(tmp_path) == ['a', 'b']
+    tmp_path.unlink(tmp_path)
+
+def test_text_append():
+    tmp_path = Path('tests/test.txt')
+    write_text('a', tmp_path)
+    write_text('b', tmp_path, append=True)
